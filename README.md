@@ -40,7 +40,7 @@ Example:
 
 	shanty --info --text 'Hello from Haiku!'
 	
-![Info](./doc/img/info.png)
+![Info](http://github.com/peja/shanty/raw/master/doc/img/info.png)
 
 
 Question
@@ -64,7 +64,7 @@ Example:
     	shanty --info --text="No it isn't."
     fi
     
-![Question](./doc/img/question.png)
+![Question](http://github.com/peja/shanty/raw/master/doc/img/question.png)
 
 
 Text entry
@@ -82,7 +82,7 @@ Example:
 
     shanty --entry --title="Login" --text="Enter password:" --hide-text
     
-![Text entry](./doc/img/entry.png)
+![Text entry](http://github.com/peja/shanty/raw/master/doc/img/entry.png)
     
 
 Text information
@@ -101,7 +101,7 @@ Example:
 
     fortune | shanty --title="Fortune" --text-info
     
-![Text information](./doc/img/text-info.png)
+![Text information](http://github.com/peja/shanty/raw/master/doc/img/text-info.png)
 
 
 Calendar
@@ -117,7 +117,7 @@ This dialog is used for selecting a date. Selected date is sent to standard outp
     --year=YEAR                 Set the calendar year
     --date-format=PATTERN       Set the format for the returned date
     
-![Calendar](./doc/img/calendar.png) 
+![Calendar](http://github.com/peja/shanty/raw/master/doc/img/calendar.png) 
 
 
 File selection
@@ -150,7 +150,7 @@ This dialog indicates progress or activity. Input is read from the standard inpu
     
 If invoked with the *--pulsate* option, dialog only indicates activity, until an EOF character is read from input.
 
-![Progress](./doc/img/progress.png)
+![Progress](http://github.com/peja/shanty/raw/master/doc/img/progress.png)
 
 
 Scale
@@ -168,7 +168,7 @@ This dialog is used for selecting a value using a slider. Selected value is sent
     --print-partial             Print partial values
     --hide-value                Hide value
 
-![Scale](./doc/img/scale.png)
+![Scale](http://github.com/peja/shanty/raw/master/doc/img/scale.png)
 
 List
 ----
