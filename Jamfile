@@ -1,0 +1,12 @@
+APP = shanty ;
+SOURCES = Shanty.cpp
+		  Dialog.cpp
+		  EntryDialog.cpp
+		  CalendarDialog.cpp
+		  TextInfoDialog.cpp
+		  ScaleDialog.cpp
+		  ProgressDialog.cpp
+		  BarberPole/BarberPole.cpp ;
+		  
+Main $(APP) : $(SOURCES) ;
+LINKLIBS on $(APP) = -lbe -ltracker ;

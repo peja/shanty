@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+<title>Shanty documentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">/*<![CDATA[*/
+
+body {
+	line-height: 1.5;
+	font-family: "DejaVu Sans", Arial, Helvetica, sans-serif;
+}
+
+pre {
+	border-color: #c0c0c0;
+	border-style: solid;
+	border-width: thin;
+	margin: 0em;
+	padding: 0.5em;
+	background-color: #f0f0f0;
+}
+
+/*]]>*/
+</style>
+</head><body>
+<p>Shanty is a program for displaying dialog boxes from command line and scripts under <a href="http://haiku-os.org/">Haiku operating system</a>. It is almost compatible with <a href="http://live.gnome.org/Zenity">GNOME Zenity</a>.</p>
+<p>This program is released under the MIT License (see the LICENSE file).</p>
+<h1>Installation</h1>
+<p>You can build Shanty by executing the <strong>jam</strong> command from inside the source directory.</p>
+<p>Then you should copy the <strong>shanty</strong> executable to /boot/system/bin</p>
+<h1>Usage</h1>
+<p>Shanty can be used to create simple graphical applications from scripts. It is possible to display information to the user and get input from the user.</p>
+<p>In all dialogs you can test the return value to check if the user clicked on the <em>Cancel</em> button or closed the dialog.</p>
+<p>For most of the dialogs, these general options are available:</p>
+<pre><code>--title=TITLE               Set the dialog title
+--width=WIDTH               Set the width
+--height=HEIGHT             Set the height
+</code></pre>
+<h2>Info, Warning, Error</h2>
+<p>These dialogs are used to display simple alert to the user. Available options are:</p>
+<pre><code>--info                      Display info dialog
+--warning                   Display warning dialog
+--error                     Display error dialog
+
+--text=TEXT                 Set the dialog text
+</code></pre>
+<p>Example:</p>
+<pre><code>shanty --info --text 'Hello from Haiku!'
+</code></pre>
+<p><img alt="Info" src="./img/info.png" /></p>
+<h2>Question</h2>
+<p>This dialog is used for asking a simple Yes/No question. Available options are:</p>
+<pre><code>--question                  Display question dialog
+
+--text=TEXT                 Set the dialog text
+--ok-label=TEXT             Set the label of the Ok button
+--cancel-label=TEXT         Set the label of the Cancel button
+</code></pre>
+<p>You can test the return value, to see if the user answered <em>Yes</em>.</p>
+<p>Example:</p>
+<pre><code>if shanty --question --text "Is computer on?"; then
+    shanty --info --text="It seems it is."
+else
+    shanty --info --text="No it isn't."
+fi
+</code></pre>
+<p><img alt="Question" src="./img/question.png" /></p>
+<h2>Text entry</h2>
+<p>This dialog allows you to get a single line of text from the user. Entered text is sent to standard output. Available options are:</p>
+<pre><code>--entry                     Display text entry dialog
+
+--text=TEXT                 Set the dialog text
+--entry-text=TEXT           Set the entry text
+--hide-text                 Hide the entry text
+</code></pre>
+<p>Example:</p>
+<pre><code>shanty --entry --title="Login" --text="Enter password:" --hide-text
+</code></pre>
+<p><img alt="Text entry" src="./img/entry.png" /></p>
+<h2>Text information</h2>
+<p>This dialog displays multiline text. If the <em>filename</em> is not specified, text is read from the standard input. Available options are:</p>
+<pre><code>--text-info                 Display text information dialog
+
+--filename=FILENAME         Open file
+--editable                  Allow changes to text
+</code></pre>
+<p>If invoked with the <em>--editable</em> option, text is sent to standard output.</p>
+<p>Example:</p>
+<pre><code>fortune | shanty --title="Fortune" --text-info
+</code></pre>
+<p><img alt="Text information" src="./img/text-info.png" /></p>
+<h2>Calendar</h2>
+<p>This dialog is used for selecting a date. Selected date is sent to standard output. Available options are:</p>
+<pre><code>--calendar                  Display calendar dialog
+
+--text=TEXT                 Set the dialog text
+--day=DAY                   Set the calendar day
+--month=MONTH               Set the calendar month
+--year=YEAR                 Set the calendar year
+--date-format=PATTERN       Set the format for the returned date
+</code></pre>
+<p><img alt="Calendar" src="./img/calendar.png" /> </p>
+<h2>File selection</h2>
+<p>This dialog is used for selecting files or directories. Available options are:</p>
+<pre><code>--file-selection            Display file selection dialog
+
+--filename=FILENAME         Set the filename
+--multiple                  Allow multiple files to be selected
+--directory                 Activate directory-only selection
+--save                      Activate save mode
+--separator=SEPARATOR       Set output separator character
+</code></pre>
+<h2>Progress</h2>
+<p>This dialog indicates progress or activity. Input is read from the standard input. Lines containing a number (0-100) update the progress bar. Displayed text can be changed by starting a line with a # character, followed by the message.</p>
+<pre><code>--progress                  Display progress indication dialog
+
+--text=TEXT                 Set the dialog text
+--percentage=PERCENTAGE     Set initial percentage
+--pulsate                   Pulsate progress bar
+--auto-close                Dismiss the dialog when 100% has been reached
+--auto-kill                 Kill parent process if cancel button is pressed
+--no-cancel                 Hide the Cancel button
+</code></pre>
+<p>If invoked with the <em>--pulsate</em> option, dialog only indicates activity, until an EOF character is read from input.</p>
+<p><img alt="Progress" src="./img/progress.png" /></p>
+<h2>Scale</h2>
+<p>This dialog is used for selecting a value using a slider. Selected value is sent to standard output. Available options are:</p>
+<pre><code>--scale                     Display scale dialog
+
+--text=TEXT                 Set the dialog text
+--value=VALUE               Set initial value
+--min-value=VALUE           Set minimum value
+--max-value=VALUE           Set maximum value
+--step=VALUE                Set step size
+--print-partial             Print partial values
+--hide-value                Hide value
+</code></pre>
+<p><img alt="Scale" src="./img/scale.png" /></p>
+<h2>List</h2>
+<p>Not yet implemented...</p>
+<h2>Notification icon</h2>
+<p>Not yet implemented...</p></body></html>
