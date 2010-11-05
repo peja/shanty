@@ -3,7 +3,7 @@ const char* usage_text =
 "  shanty [OPTION...]\n"
 "\n"
 "Help options\n"
-"  -?, --help                  Show help options\n"
+"  -h, --help                  Show help options\n"
 "\n"
 "General options\n"
 "  --title=TITLE               Set the dialog title\n"

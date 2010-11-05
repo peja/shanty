@@ -259,7 +259,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           {"hide-value",       no_argument,       &fHideValue, 1},
           {"hide-text",        no_argument,       &fHideText, 1},
           
-          {"help",             no_argument,       0, '?'},
+          {"help",             no_argument,       0, 'h'},
           
           
           // These options require arguments          
@@ -308,8 +308,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
       // getopt_long stores the option index here.
       int option_index = 0;
 
-	  // Set the error character to ':' instead of '?'
-      c = getopt_long (argc, argv, ":?",
+      c = getopt_long (argc, argv, "h",
                        long_options, &option_index);
 
       // Detect the end of the options.
@@ -415,15 +414,13 @@ Shanty::ArgvReceived(int32 argc, char** argv)
         case kDummy: // Do nothing
             break;
 
-        case '?':
+        case 'h':
           fResponseType = kHelp;
           break;
           
-        case ':':
         default:
+          // get_opts_long displays the error message
         
-          //fprintf(stdout, "Unrecognized option %s\n", argv[index]);
-          //fprintf(stdout, "Missing the text argument!\n");
           fReturnValue = -1;
           break;
 
@@ -632,11 +629,19 @@ Shanty::ReadyToRun()
             case kList:
             case kNotification:
             {	
-            	printf("Bummer! Option is not yet implemented...\n");
+            	fprintf(stderr, "Bummer! Option is not yet implemented...\n");
+            	
+            	fReturnValue = -1;
+            	
+            	Quit();
+            	
+            	break;
             }
             
             case kNone: //Error
             default:
+            	fprintf(stderr, "You need to specify a dialog type. Check --help\n");
+            
             	fReturnValue = -1;
             	
             	Quit();
@@ -654,7 +659,6 @@ Shanty::ReadyToRun()
             Quit();
         }
     } else {
-        //_Usage();
     
     	Quit();
     }
