@@ -25,9 +25,18 @@ CalendarDialog::SetDate(int day, int month, int year, bool initial = false)
 	
   	time ( &rawtime );
   	timeinfo = localtime ( &rawtime );
-  	timeinfo->tm_year = year - 1900;
-  	timeinfo->tm_mon = month - 1;
-  	timeinfo->tm_mday = day;
+  	
+  	// It is possible to set only some of the options (--year --month --day)
+  	// and still get a valid date (missing values are taken from the current date)
+  	if (day > 0)
+  		timeinfo->tm_mday = day;
+  		
+  	if (month > 0)
+  		timeinfo->tm_mon = month - 1;
+  		
+  	if (year > 0)
+  		timeinfo->tm_year = year - 1900;
+  	
   	
   	if (mktime(timeinfo) == -1) {
   		if (initial) {
