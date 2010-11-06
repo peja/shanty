@@ -67,7 +67,9 @@ ScaleDialog::CreateViews()
         BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
         
     fSlider = new BSlider(
-    			 BRect(0, 0, 1, 1), "slider", NULL, new BMessage('SlDE'), fMinValue, fMaxValue);
+    			 BRect(0, 0, 1, 1), "slider", NULL, NULL, fMinValue, fMaxValue);
+    			 
+    fSlider->SetModificationMessage(new BMessage('SlDE'));
     			 
     fSlider->SetExplicitMaxSize(
         BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
@@ -151,7 +153,15 @@ ScaleDialog::MessageReceived(BMessage* message)
             
         case 'SlDE':
     	{
-    		fValue = fSlider->Value();
+    		int32 newValue = fSlider->Value();
+    		
+    		// Avoid repeating same numbers
+    		if (fValue != newValue) {
+    			fValue = newValue;
+    		} else {
+    			return;
+    		}
+    		
     		BString val;
     	
     		val << fValue;
