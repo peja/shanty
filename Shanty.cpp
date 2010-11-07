@@ -12,13 +12,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <getopt.h>
-
 #include <sys/select.h>
 
-
 #include "shanty_help.h"
+
+#include "utils.h"
+#include "Dialog.h"
+#include "EntryDialog.h"
+#include "CalendarDialog.h"
+#include "TextInfoDialog.h"
+#include "ScaleDialog.h"
+#include "ProgressDialog.h"
+
 
 #define SHANTY_VERSION "0.1"
 
@@ -37,60 +43,7 @@ char* kInfoText = "All updates are complete.";
 char* kWarningText = "Are you sure you want to proceed?";
 char* kErrorText = "An error has occurred.";
 
-//
-// Read the input in a non-blocking way.
-//
-// Returns -1 when there is no more data to read, on error, and if
-// the thread receives a message, which indicates that the reading must stop.
-//
-// Otherwise returns number of read bytes.
-ssize_t
-read_stdin_nonblocking(char* str, size_t size)
-{
-	static fd_set rfds, rfdsCopy;
-	static struct timeval tv, tvCopy;
 
-	// Read from stdin (fd 0).
-	
-	FD_ZERO(&rfds);
-	FD_SET(0, &rfds);
-
-	// Wait up to a second.
-	tv.tv_sec = 1;
-	tv.tv_usec = 0;
-	
-	for (;;) {
-		// Quit if there is a message in the cache.
-		if (has_data(find_thread(NULL)))
-			break;
-			
-		// Make copies of structures, because 'select' modifies them.
-		rfdsCopy = rfds;
-		tvCopy = tv;
-		
-		if (select(1, &rfdsCopy, NULL, NULL, &tvCopy) == -1)
-        	break;
-        	
-    	if (FD_ISSET(0, &rfds)) {
-    		ssize_t n = read(0, str, size);
-    		
-    		if (n <= 0) break;
-    		
-    		return n;
-    	}
-	}
-	
-	return -1;
-}
-
-
-
-#include "Dialog.h"
-#include "EntryDialog.h"
-#include "CalendarDialog.h"
-#include "TextInfoDialog.h"
-#include "ScaleDialog.h"
-#include "ProgressDialog.h"
 
 enum ResponseTypes { kNone, kInfo, kCalendar, kEntry, kError, kFileSelection,
                      kList, kNotification, kProgress, kQuestion, kWarning,

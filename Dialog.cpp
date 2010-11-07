@@ -4,17 +4,13 @@
  */
 
 #include "Dialog.h"
+#include "utils.h"
 
 
 void
 Dialog::CenterOnScreen()
 {
-    BRect screenRect = BScreen(this).Frame();
-    BRect windowRect = Frame();
-
-    MoveTo(
-        (screenRect.Width()  - windowRect.Width())  / 2,
-        (screenRect.Height() - windowRect.Height()) / 2);
+    center_on_screen(this);
 }
 
 

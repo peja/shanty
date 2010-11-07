@@ -6,14 +6,12 @@
 #include <stdio.h>
 #include <storage/File.h>
 #include "TextInfoDialog.h"
-
+#include "utils.h"
 
 extern char* kClose;
 
 const char* kTextInfoTitle = "Text View";
 
-ssize_t
-read_stdin_nonblocking(char* str, size_t size);
 
 
 EditBox::EditBox(BRect viewFrame, bool editable)

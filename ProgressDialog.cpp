@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "ProgressDialog.h"
+#include "utils.h"
 
 extern char* kOk;
 extern char* kCancel;
@@ -17,8 +18,6 @@ const char* kProgressText  = "Running...";
 const rgb_color kHighColor = {50, 150, 255, 255};
 const rgb_color kLowColor = {255, 255, 255, 255};
 
-ssize_t
-read_stdin_nonblocking(char* str, size_t size);
 
 
 ProgressDialog*

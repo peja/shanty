@@ -1,5 +1,6 @@
 APP = shanty ;
 SOURCES = Shanty.cpp
+          utils.cpp
 		  Dialog.cpp
 		  EntryDialog.cpp
 		  CalendarDialog.cpp

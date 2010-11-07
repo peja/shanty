@@ -9,7 +9,6 @@
 #include <app/Application.h>
 #include <interface/Window.h>
 #include <interface/Button.h>
-#include <interface/Screen.h>
 #include <interface/GroupLayout.h>
 #include <interface/GroupLayoutBuilder.h>
 #include <interface/SpaceLayoutItem.h>
