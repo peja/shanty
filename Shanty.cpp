@@ -524,6 +524,11 @@ Shanty::ReadyToRun()
     				
     				if (fTitle != NULL)
     					panel->Window()->SetTitle(fTitle);
+    					
+    				if (fWidth > 1.0 && fHeight > 1.0)
+    					panel->Window()->ResizeTo(fWidth, fHeight);
+    					
+    				center_on_screen(panel->Window());
     
     				panel->Show();
             	
