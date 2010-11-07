@@ -26,7 +26,7 @@
 #include "ProgressDialog.h"
 
 
-#define SHANTY_VERSION "0.1"
+#define SHANTY_VERSION "0.2"
 
 const char* kSignature = "application/x-vnd.Shanty";
 
@@ -78,7 +78,7 @@ class Shanty : public BApplication {
 
     private:
         int32 fReturnValue;
-        Dialog* fDialog;
+        BWindow* fDialog;
         
         char* fTitle;
         char* fText;
@@ -115,6 +115,7 @@ class Shanty : public BApplication {
     	int32 fMaxValue;
 	    int32 fStep;
 	    int fPercentage;
+	    int32 fTimeout;
 };
 
 Shanty::Shanty()
@@ -158,7 +159,8 @@ Shanty::Shanty()
     fMinValue(0),
     fMaxValue(0),
     fStep(0),
-	fPercentage(0)
+	fPercentage(0),
+	fTimeout(0)
 {
 }
 
@@ -359,6 +361,10 @@ Shanty::ArgvReceived(int32 argc, char** argv)
        			break;
         
         case kTimeout:
+        		fTimeout = atoi(optarg);
+        		
+        		break;
+        	
         case kColumn:
         case kPrintColumn:
         case kHideColumn:
@@ -401,6 +407,19 @@ Shanty::_About() const
     printf("Shanty %s\n", SHANTY_VERSION);
     printf("\nDisplay dialog boxes from scripts\n");
 }
+
+
+const int32 MSG_TIMEOUT = 'TmOu';
+
+int32
+timeout_thread(void* data)
+{
+	snooze(((uintptr_t) data) * 1000000);
+	
+	be_app->PostMessage(MSG_TIMEOUT);
+	
+	return 0;
+}	
 
 
 /*
@@ -469,9 +488,9 @@ Shanty::ReadyToRun()
                                            
                 alert->SetShortcut(0, B_ESCAPE);
                 
-                fReturnValue = !alert->Go();
+                fDialog = (BWindow*)alert;
                 
-                Quit();
+                alert->Go(new BInvoker(new BMessage(), be_app_messenger));
                 
                 break;
             }
@@ -612,16 +631,26 @@ Shanty::ReadyToRun()
                 kOk, NULL, NULL,
                 B_WIDTH_AS_USUAL, fIcon);
 
-            alert->Go();
-            
-            Quit();
+            fDialog = (BWindow*)alert;
+                
+            alert->Go(new BInvoker(new BMessage(), be_app_messenger));
         }
+        
+        if (fTimeout > 0) {
+        	thread_id tt;
+        	
+        	tt = spawn_thread(timeout_thread, "timeout", B_NORMAL_PRIORITY, (void*)fTimeout);
+    
+            if (tt >= B_OK) {
+    	        resume_thread(tt);
+            }
+        }
+        
     } else {
     
     	Quit();
     }
 }
-
 
 
 void
@@ -667,7 +696,31 @@ Shanty::RefsReceived(BMessage* message)
 void
 Shanty::MessageReceived(BMessage* message)
 {
-    switch (message->what) {
+	int32 what = message->what;
+	
+	// Adjust message if we are using alert dialogs
+	int32 which;
+	
+	if (message->FindInt32("which", &which) == B_OK) {
+	
+		switch (fResponseType) {
+			
+			case kInfo: kWarning: kError:
+					what = MSG_OK_CLICKED;
+	
+					break;
+				
+			case kQuestion:
+				if (which == 1) {
+					what = MSG_OK_CLICKED;
+					
+				} else {
+					what = MSG_CANCEL_CLICKED;
+				}
+		}
+	}
+	
+    switch (what) {
     	
     	case B_SAVE_REQUESTED:
     	{
@@ -693,8 +746,12 @@ Shanty::MessageReceived(BMessage* message)
     		break;
     	}
     	
-    	case B_CANCEL: case MSG_CANCEL_CLICKED:
-    		fReturnValue = 1;
+    	case B_CANCEL: case MSG_CANCEL_CLICKED: case MSG_TIMEOUT:
+    	{
+    		if (what == MSG_TIMEOUT)
+    			fReturnValue = 5;
+    		else
+    			fReturnValue = 1;
     		
     		if (fResponseType != kFileSelection) {
     			fDialog->Lock();
@@ -704,14 +761,17 @@ Shanty::MessageReceived(BMessage* message)
     		Quit();
     		
     		break;
+    	}
     		
     	case MSG_OK_CLICKED:
+    	{
     		fDialog->Lock();
 	    	fDialog->Quit();
 	    	
     		Quit();
     		
     		break;
+    	}
     		
     	default:
     		BApplication::MessageReceived(message);
