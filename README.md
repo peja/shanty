@@ -23,6 +23,7 @@ For most of the dialogs, these general options are available:
     --title=TITLE               Set the dialog title
     --width=WIDTH               Set the width
     --height=HEIGHT             Set the height
+    --timeout=TIMEOUT           Set dialog timeout in seconds
 
   
 Info, Warning, Error
