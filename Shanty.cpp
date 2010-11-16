@@ -30,18 +30,18 @@
 
 const char* kSignature = "application/x-vnd.Shanty";
 
-char* kOk = "OK";
-char* kCancel = "Cancel";
-char* kYes = "Yes";
-char* kNo = "No";
-char* kClose = "Close";
-char* kInfoTitle = "Information";
-char* kWarningTitle = "Warning";
-char* kErrorTitle = "Error";
-char* kQuestionTitle = "Question";
-char* kInfoText = "All updates are complete.";
-char* kWarningText = "Are you sure you want to proceed?";
-char* kErrorText = "An error has occurred.";
+char kOk[] = "OK";
+char kCancel[] = "Cancel";
+char kYes[] = "Yes";
+char kNo[] = "No";
+char kClose[] = "Close";
+char kInfoTitle[] = "Information";
+char kWarningTitle[] = "Warning";
+char kErrorTitle[] = "Error";
+char kQuestionTitle[] = "Question";
+char kInfoText[] = "All updates are complete.";
+char kWarningText[] = "Are you sure you want to proceed?";
+char kErrorText[] = "An error has occurred.";
 
 
 
@@ -78,7 +78,7 @@ class Shanty : public BApplication {
 
     private:
         int32 fReturnValue;
-        BWindow* fDialog;
+        Dialog* fDialog;
         
         char* fTitle;
         char* fText;
@@ -488,8 +488,6 @@ Shanty::ReadyToRun()
                                            
                 alert->SetShortcut(0, B_ESCAPE);
                 
-                fDialog = (BWindow*)alert;
-                
                 alert->Go(new BInvoker(new BMessage(), be_app_messenger));
                 
                 break;
@@ -630,8 +628,6 @@ Shanty::ReadyToRun()
             BAlert* alert = new BAlert(fTitle, fText,
                 kOk, NULL, NULL,
                 B_WIDTH_AS_USUAL, fIcon);
-
-            fDialog = (BWindow*)alert;
                 
             alert->Go(new BInvoker(new BMessage(), be_app_messenger));
         }
@@ -752,11 +748,6 @@ Shanty::MessageReceived(BMessage* message)
     			fReturnValue = 5;
     		else
     			fReturnValue = 1;
-    		
-    		if (fResponseType != kFileSelection) {
-    			fDialog->Lock();
-    			fDialog->Quit();
-    		}
     	
     		Quit();
     		
@@ -764,10 +755,7 @@ Shanty::MessageReceived(BMessage* message)
     	}
     		
     	case MSG_OK_CLICKED:
-    	{
-    		fDialog->Lock();
-	    	fDialog->Quit();
-	    	
+    	{	
     		Quit();
     		
     		break;

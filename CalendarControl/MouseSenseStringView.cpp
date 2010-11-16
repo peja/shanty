@@ -35,8 +35,8 @@ MouseSenseStringView::MouseSenseStringView(BMessage *msg,
                                            BRect frame,
                                            const char *name,
                                            const char *text,
-                                           uint32 resizingMode=B_FOLLOW_LEFT|B_FOLLOW_TOP,
-                                           uint32 flags=B_WILL_DRAW)
+                                           uint32 resizingMode,
+                                           uint32 flags)
                      :BStringView(frame,name,text,resizingMode,flags)
 {
  this->msg=msg;

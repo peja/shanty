@@ -7,10 +7,10 @@
 #include <stdio.h>
 #include "ScaleDialog.h"
 
-extern char* kOk;
-extern char* kCancel;
+extern char kOk[];
+extern char kCancel[];
 
-const char* kScaleTitle = "Adjust the scale value";
+const char kScaleTitle[] = "Adjust the scale value";
 
 
 ScaleDialog::ScaleDialog(char* title, float width, float height,
@@ -138,16 +138,16 @@ ScaleDialog::MessageReceived(BMessage* message)
         	
         	fprintf(stdout, "%s\n", val.String());
         
-            Hide();
             be_app->PostMessage(MSG_OK_CLICKED);
+            Quit();
         
             break;
         }
         
         case MSG_CANCEL_CLICKED:
         
-            Hide();
             be_app->PostMessage(MSG_CANCEL_CLICKED);
+            Quit();
             
             break;
             

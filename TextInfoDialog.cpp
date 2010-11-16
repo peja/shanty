@@ -8,9 +8,9 @@
 #include "TextInfoDialog.h"
 #include "utils.h"
 
-extern char* kClose;
+extern char kClose[];
 
-const char* kTextInfoTitle = "Text View";
+const char kTextInfoTitle[] = "Text View";
 
 
 
@@ -188,10 +188,9 @@ TextInfoDialog::MessageReceived(BMessage* message)
         	}
         	
         	_EndThread();
-        	
-            Hide();
             
             be_app->PostMessage(MSG_OK_CLICKED);
+            Quit();
         
             break;
         
@@ -199,9 +198,8 @@ TextInfoDialog::MessageReceived(BMessage* message)
         
             _EndThread();
             
-            Hide();
-            
             be_app->PostMessage(MSG_CANCEL_CLICKED);
+            Quit();
             
             break;
         

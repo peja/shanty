@@ -132,26 +132,26 @@ MonthWindowView::MonthWindowView(int day, int month, int year,
 #endif
 
 #ifdef __LANG_ENGLISH
- weekdayNames[0]="Mo";
- weekdayNames[1]="Tu";
- weekdayNames[2]="We";
- weekdayNames[3]="Th";
- weekdayNames[4]="Fr";
- weekdayNames[5]="Sa";
- weekdayNames[6]="Su";
+ weekdayNames[0]=(char*)"Mo";
+ weekdayNames[1]=(char*)"Tu";
+ weekdayNames[2]=(char*)"We";
+ weekdayNames[3]=(char*)"Th";
+ weekdayNames[4]=(char*)"Fr";
+ weekdayNames[5]=(char*)"Sa";
+ weekdayNames[6]=(char*)"Su";
  
- monthNames[0]="January";
- monthNames[1]="February";
- monthNames[2]="March";
- monthNames[3]="April";
- monthNames[4]="May";
- monthNames[5]="June";
- monthNames[6]="July";
- monthNames[7]="August";
- monthNames[8]="September";
- monthNames[9]="October";
- monthNames[10]="November";
- monthNames[11]="December";
+ monthNames[0]=(char*)"January";
+ monthNames[1]=(char*)"February";
+ monthNames[2]=(char*)"March";
+ monthNames[3]=(char*)"April";
+ monthNames[4]=(char*)"May";
+ monthNames[5]=(char*)"June";
+ monthNames[6]=(char*)"July";
+ monthNames[7]=(char*)"August";
+ monthNames[8]=(char*)"September";
+ monthNames[9]=(char*)"October";
+ monthNames[10]=(char*)"November";
+ monthNames[11]=(char*)"December";
 #endif
 
 #ifdef __LANG_RUSSIAN

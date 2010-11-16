@@ -8,11 +8,11 @@
 #include "ProgressDialog.h"
 #include "utils.h"
 
-extern char* kOk;
-extern char* kCancel;
+extern char kOk[];
+extern char kCancel[];
 
-const char* kProgressTitle = "Progress";
-const char* kProgressText  = "Running...";
+const char kProgressTitle[] = "Progress";
+const char kProgressText[]  = "Running...";
 
 // BarberPole colors
 const rgb_color kHighColor = {50, 150, 255, 255};
@@ -114,7 +114,7 @@ ProgressDialog::CreateViews()
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
         .Add(fTextLabel)
-        .Add(fPulsate ? fBarberPole : fStatusBar)
+        .Add(fPulsate ? (BView*)fBarberPole : (BView*)fStatusBar)
         .AddGlue()
         .Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
             .AddGlue()
@@ -266,8 +266,8 @@ ProgressDialog::_EndInput()
 				
 		_EndThread();
       
-        Hide();
         be_app->PostMessage(MSG_OK_CLICKED);
+        Quit();
 		
 	} else {
 		Lock();
@@ -309,8 +309,8 @@ ProgressDialog::MessageReceived(BMessage* message)
         
         	_EndThread();
         
-            Hide();
             be_app->PostMessage(MSG_OK_CLICKED);
+            Quit();
         
             break;
         
@@ -318,8 +318,8 @@ ProgressDialog::MessageReceived(BMessage* message)
         
         	_EndThread();
         
-            Hide();
             be_app->PostMessage(MSG_CANCEL_CLICKED);
+            Quit();
             
             break;
             

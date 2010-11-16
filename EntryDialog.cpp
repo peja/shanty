@@ -6,11 +6,11 @@
 #include <stdio.h>
 #include "EntryDialog.h"
 
-extern char* kOk;
-extern char* kCancel;
+extern char kOk[];
+extern char kCancel[];
 
-const char* kEntryTitle = "Add a new entry";
-const char* kEntryInitialText  = "Enter new text:";
+const char kEntryTitle[] = "Add a new entry";
+const char kEntryInitialText[]  = "Enter new text:";
 
 EntryDialog::EntryDialog(char* title, float width, float height,
                          char* text, char* entryText, bool hideText)
@@ -107,16 +107,16 @@ EntryDialog::MessageReceived(BMessage* message)
         case MSG_OK_CLICKED:
         
         	fprintf(stdout, "%s\n", fEntry->Text());
-        
-            Hide();
+
             be_app->PostMessage(MSG_OK_CLICKED);
+            Quit();
         
             break;
         
         case MSG_CANCEL_CLICKED:
         
-            Hide();
             be_app->PostMessage(MSG_CANCEL_CLICKED);
+            Quit();
             
             break;
             

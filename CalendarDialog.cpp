@@ -11,15 +11,15 @@
 #include "CalendarControl/MonthWindowView.cpp"
 
 
-extern char* kOk;
-extern char* kCancel;
+extern char kOk[];
+extern char kCancel[];
 
-const char* kCalendarTitle = "Calendar selection";
-const char* kCalendarText  = "Select a date from below.";
+const char kCalendarTitle[] = "Calendar selection";
+const char kCalendarText[]  = "Select a date from below.";
 
 
 void
-CalendarDialog::SetDate(int day, int month, int year, bool initial = false)
+CalendarDialog::SetDate(int day, int month, int year, bool initial)
 {
 	time_t rawtime;
 	
@@ -150,16 +150,16 @@ CalendarDialog::MessageReceived(BMessage* message)
 			strftime (buffer, len - 1, fFormat, timeinfo);
         	fprintf(stdout, "%s\n", buffer);
         
-            Hide();
             be_app->PostMessage(MSG_OK_CLICKED);
+            Quit();
         
             break;
         }
         
         case MSG_CANCEL_CLICKED:
         
-            Hide();
             be_app->PostMessage(MSG_CANCEL_CLICKED);
+            Quit();
             
             break;
             
