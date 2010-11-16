@@ -14,11 +14,14 @@ const char kTextInfoTitle[] = "Text View";
 
 
 
-EditBox::EditBox(BRect viewFrame, bool editable)
+EditBox::EditBox(BRect viewFrame, bool editable, bool fixedFont)
 	        : BTextView(viewFrame, "editBox", viewFrame, 
 	                B_FOLLOW_ALL, B_FRAME_EVENTS | B_WILL_DRAW)
 {
 	MakeEditable(editable);
+	
+	if (fixedFont)
+		SetFontAndColor(be_fixed_font);
 }
 
 void
@@ -44,7 +47,7 @@ TextInfoDialog::fThreadId = 0;
 
 
 TextInfoDialog::TextInfoDialog(char* title, float width, float height,
-                         	   char* fileName, bool editable)
+                         	   char* fileName, bool editable, bool fixedFont)
                          : Dialog(title, width, height)
 {
     if (title == NULL)
@@ -52,6 +55,7 @@ TextInfoDialog::TextInfoDialog(char* title, float width, float height,
         
     fFileName = fileName;
     fEditable = editable;
+    fFixedFont = fixedFont;
     
     if (width < 1.0)
         width = 300;
@@ -87,7 +91,7 @@ TextInfoDialog::CreateViews()
         BRect(0, 1, 80, 1), "closeButton", kClose, new BMessage(MSG_OK_CLICKED),
         B_FOLLOW_RIGHT);
         
-    fEditBox = new EditBox(BRect(0, 0, 1, 1), fEditable);
+    fEditBox = new EditBox(BRect(0, 0, 1, 1), fEditable, fFixedFont);
     			 
         
     BScrollView* scrollView = new BScrollView("scrollview", fEditBox, B_FOLLOW_ALL, 0, false, true);

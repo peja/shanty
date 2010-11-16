@@ -91,6 +91,7 @@ const char* usage_text =
 "  --text-info                 Display text information dialog\n"
 "  --filename=FILENAME         Open file\n"
 "  --editable                  Allow changes to text\n"
+"  --fixed-font                Use fixed font\n"
 "\n"
 "Miscellaneous options\n"
 "  --about                     About shanty\n"

@@ -95,6 +95,7 @@ This dialog displays multiline text. If the *filename* is not specified, text is
     
     --filename=FILENAME         Open file
     --editable                  Allow changes to text
+    --fixed-font                Use fixed font
 
 If invoked with the *--editable* option, text is sent to standard output.
 

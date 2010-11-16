@@ -15,7 +15,7 @@ class EditBox : public BTextView
 {
 public:
 	
-	EditBox(BRect viewFrame, bool editable);
+	EditBox(BRect viewFrame, bool editable, bool fixedFont);
 	void FrameResized(float width, float height);
 	
 };
@@ -26,7 +26,7 @@ class TextInfoDialog : public Dialog
 public:
 
     TextInfoDialog(char* title, float width, float height,
-                   char* fileName, bool editable);
+                   char* fileName, bool editable, bool fixedFont);
                 
     
     void MessageReceived(BMessage* msg);
@@ -44,6 +44,7 @@ private:
     
     const char* fFileName;
     bool fEditable;
+    bool fFixedFont;
     
     BTextView* fEditBox;
 };

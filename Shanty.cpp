@@ -97,6 +97,7 @@ class Shanty : public BApplication {
         int fChecklist;
         int fRadiolist;
         int fEditable;
+        int fFixedFont;
         int fListen;
         int fPulsate;
         int fAutoClose;
@@ -142,6 +143,7 @@ Shanty::Shanty()
     fChecklist(0),
     fRadiolist(0),
     fEditable(0),
+    fFixedFont(0),
     fListen(0),
     fPulsate(0),
     fAutoClose(0),
@@ -205,6 +207,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           {"checklist",        no_argument,       &fChecklist, 1},
           {"radiolist",        no_argument,       &fRadiolist, 1},
           {"editable",         no_argument,       &fEditable, 1},
+          {"fixed-font",       no_argument,       &fFixedFont, 1},
           {"listen",           no_argument,       &fListen, 1},
           {"pulsate",          no_argument,       &fPulsate, 1},
           {"auto-close",       no_argument,       &fAutoClose, 1},
@@ -564,7 +567,7 @@ Shanty::ReadyToRun()
             case kCalendar:
             {
             	fDialog = new CalendarDialog(fTitle, fWidth, fHeight, fText,
-            										fDay, fMonth, fYear, fDateFormat);
+            								 fDay, fMonth, fYear, fDateFormat);
             	
             	fDialog->Show();
             	
@@ -573,7 +576,8 @@ Shanty::ReadyToRun()
             
             case kTextInfo:
         	{
-        		fDialog = new TextInfoDialog(fTitle, fWidth, fHeight, fFilename, fEditable);
+        		fDialog = new TextInfoDialog(fTitle, fWidth, fHeight,
+        									 fFilename, fEditable, fFixedFont);
             	
             	fDialog->Show();
             	
