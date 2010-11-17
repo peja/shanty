@@ -1,3 +1,10 @@
+0.3 / 2010-11-17
+
+  * Fixed compilation under GCC4
+  
+  * Added fixed-font option to text information dialog
+  
+
 0.2 / 2010-11-07
 
   * Timeout option implemented

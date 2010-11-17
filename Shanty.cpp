@@ -26,7 +26,7 @@
 #include "ProgressDialog.h"
 
 
-#define SHANTY_VERSION "0.2"
+#define SHANTY_VERSION "0.3"
 
 const char* kSignature = "application/x-vnd.Shanty";
 
