@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic 
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
 #include <stdlib.h>
@@ -267,7 +268,7 @@ ProgressDialog::_EndInput()
 		_EndThread();
       
         be_app->PostMessage(MSG_OK_CLICKED);
-        Quit();
+        be_app->PostMessage(B_QUIT_REQUESTED);
 		
 	} else {
 		Lock();
