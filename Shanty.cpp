@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
 #include <app/Application.h>
@@ -19,6 +20,7 @@
 
 #include "utils.h"
 #include "Dialog.h"
+#include "ColorDialog.h"
 #include "EntryDialog.h"
 #include "CalendarDialog.h"
 #include "TextInfoDialog.h"
@@ -45,11 +47,11 @@ char kErrorText[] = "An error has occurred.";
 
 
 
-enum ResponseTypes { kNone, kInfo, kCalendar, kEntry, kError, kFileSelection,
-                     kList, kNotification, kProgress, kQuestion, kWarning,
-                     kScale, kTextInfo, kHelp, kAbout, kVersion };
+enum ResponseTypes { kNone, kInfo, kCalendar, kColorSelection, kEntry, kError,
+                     kFileSelection, kList, kNotification, kProgress, kQuestion,
+                     kWarning, kScale, kTextInfo, kHelp, kAbout, kVersion };
                      
-enum Parameters { kDummy=2, kTitle, kWidth, kHeight, kTimeout, kText, kDay,
+enum Parameters { kDummy=2, kTitle, kWidth, kHeight, kTimeout, kText, kColor, kDay,
                   kMonth, kYear, kDateFormat, kEntryText, kFilename,
                   kSeparator, kColumn, kPrintColumn, kHideColumn,
                   kPercentage, kValue, kMinValue, kMaxValue, kStep,
@@ -88,6 +90,7 @@ class Shanty : public BApplication {
         char* fDateFormat;
         char* fOkLabel;
         char* fCancelLabel;
+        char* fColor;
         
         int fResponseType;
         int fNoWrap;
@@ -134,6 +137,7 @@ Shanty::Shanty()
     fDateFormat(NULL),
     fOkLabel(kYes),
     fCancelLabel(kNo),
+	fColor(NULL),
     
     fResponseType(kNone),
     fNoWrap(0),
@@ -186,6 +190,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           
           {"info",             no_argument,       &fResponseType, kInfo},
           {"calendar",         no_argument,       &fResponseType, kCalendar},
+          {"color-selection",  no_argument,		  &fResponseType, kColorSelection},
           {"entry",            no_argument,       &fResponseType, kEntry},
           {"file-selection",   no_argument,       &fResponseType, kFileSelection},
           {"list",             no_argument,       &fResponseType, kList},
@@ -227,6 +232,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           {"height",          required_argument, 0, kHeight},
           {"timeout",         required_argument, 0, kTimeout},
           {"text",            required_argument, 0, kText},
+          {"color",           required_argument, 0, kColor},
           {"day",             required_argument, 0, kDay},
           {"month",           required_argument, 0, kMonth},
           {"year",            required_argument, 0, kYear},
@@ -305,6 +311,11 @@ Shanty::ArgvReceived(int32 argc, char** argv)
         	
         case kHeight:
         		fHeight = atof(optarg);
+        		
+        		break;
+        		
+        case kColor:
+        		fColor = strdup(optarg);
         		
         		break;
         		
@@ -568,6 +579,28 @@ Shanty::ReadyToRun()
             {
             	fDialog = new CalendarDialog(fTitle, fWidth, fHeight, fText,
             								 fDay, fMonth, fYear, fDateFormat);
+            	
+            	fDialog->Show();
+            	
+            	break;
+            }
+            
+            case kColorSelection:
+            {
+            	BString red, green, blue;
+            	BString color_str = BString(fColor);
+            	
+            	color_str.CopyInto(red, 1, 2);
+            	color_str.CopyInto(green, 3, 2);
+            	color_str.CopyInto(blue, 5, 2);
+            	
+            	rgb_color color;
+            	color.red = strtol(red.String(), NULL, 16);
+            	color.green = strtol(green.String(), NULL, 16);
+            	color.blue = strtol(blue.String(), NULL, 16);
+            	color.alpha = 255;
+            	
+            	fDialog = new ColorDialog(BString(fTitle), fWidth, fHeight, color);
             	
             	fDialog->Show();
             	

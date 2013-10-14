@@ -121,6 +121,15 @@ This dialog is used for selecting a date. Selected date is sent to standard outp
     
 ![Calendar](https://github.com/peja/shanty/raw/master/doc/img/calendar.png) 
 
+Color selection
+--------------
+
+This dialog is used for selecting colors. Available options are:
+
+    --color-selection           Display color selection dialog
+    
+    --color=COLOR               Set initial color (ex: #ababab)
+
 
 File selection
 --------------

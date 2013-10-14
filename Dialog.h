@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
  
 #ifndef	DIALOG_H
@@ -18,7 +19,7 @@ enum { MSG_OK_CLICKED=1000, MSG_CANCEL_CLICKED };
 class Dialog : public BWindow {
 public:
 
-    Dialog(char* title, float width, float height);
+    Dialog(const char* title, float width, float height);
     virtual bool QuitRequested();
     
     void CenterOnScreen();

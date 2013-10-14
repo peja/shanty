@@ -5,6 +5,7 @@ SOURCES = Shanty.cpp
           Dialog.cpp
           EntryDialog.cpp
           CalendarDialog.cpp
+          ColorDialog.cpp
           TextInfoDialog.cpp
           ScaleDialog.cpp
           ProgressDialog.cpp
