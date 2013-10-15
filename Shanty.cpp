@@ -587,18 +587,7 @@ Shanty::ReadyToRun()
             
             case kColorSelection:
             {
-            	BString red, green, blue;
-            	BString color_str = BString(fColor);
-            	
-            	color_str.CopyInto(red, 1, 2);
-            	color_str.CopyInto(green, 3, 2);
-            	color_str.CopyInto(blue, 5, 2);
-            	
-            	rgb_color color;
-            	color.red = strtol(red.String(), NULL, 16);
-            	color.green = strtol(green.String(), NULL, 16);
-            	color.blue = strtol(blue.String(), NULL, 16);
-            	color.alpha = 255;
+            	rgb_color color = hex_string_to_rgb_color(fColor);
             	
             	fDialog = new ColorDialog(BString(fTitle), fWidth, fHeight, color);
             	

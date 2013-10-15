@@ -9,14 +9,15 @@
 #include <String.h>
 
 #include "ColorDialog.h"
+#include "utils.h"
 
 extern char kOk[];
 extern char kCancel[];
 
 const BString kColorTitle = BString("Color selection");
 
-const int32 MSG_COLOR_CHANGED = 'clrc';
-const int32 MSG_HEX_COLOR_CHANGED = 'hclc';
+const uint32 MSG_COLOR_CHANGED = 'clrc';
+const uint32 MSG_HEX_COLOR_CHANGED = 'hclc';
 
 ColorDialog::ColorDialog(BString title, float width, float height,
 						 rgb_color color)
@@ -141,22 +142,8 @@ void ColorDialog::MessageReceived(BMessage* message)
 		}
 		
 		case MSG_HEX_COLOR_CHANGED:
-		{
-			BString red, green, blue;
-            BString color_str = BString(fColorHex->Text());
-            
-            if (color_str.Length() != 7)
-            	break;
-            	
-            color_str.CopyInto(red, 1, 2);
-            color_str.CopyInto(green, 3, 2);
-            color_str.CopyInto(blue, 5, 2);
-            	
-            rgb_color color;
-            color.red = strtol(red.String(), NULL, 16);
-            color.green = strtol(green.String(), NULL, 16);
-            color.blue = strtol(blue.String(), NULL, 16);
-            color.alpha = 255;
+		{   	
+            rgb_color color = hex_string_to_rgb_color(fColorHex->Text());
             
             fColorControl->SetValue(color);
             
