@@ -12,14 +12,12 @@
 extern char kOk[];
 extern char kCancel[];
 
-const char kProgressTitle[] = "Progress";
-const char kProgressText[]  = "Running...";
+const BString kProgressTitle = "Progress";
+const BString kProgressText = "Running...";
 
 // BarberPole colors
 const rgb_color kHighColor = {50, 150, 255, 255};
 const rgb_color kLowColor = {255, 255, 255, 255};
-
-
 
 ProgressDialog*
 ProgressDialog::fInstance = NULL;
@@ -28,14 +26,16 @@ thread_id
 ProgressDialog::fThreadId = 0;
 
 
-ProgressDialog::ProgressDialog(char* title, float width, float height, char* text,
-                               int percentage, bool pulsate, bool autoClose, bool noCancel, BString windowIcon)
-                         : Dialog(title, windowIcon, width, height)
+ProgressDialog::ProgressDialog(BString const & title, float width, float height,
+	BString const & text, int percentage, bool pulsate, bool autoClose, bool noCancel,
+	BString const & windowIcon)
+	:
+	Dialog(title, windowIcon, width, height)
 {
-    if (title == NULL)
+    if (title.Length() == 0)
         SetTitle(kProgressTitle);
     
-    fText = (text != NULL ? text : kProgressText);
+    fText = (text.Length() > 0 ? text : kProgressText);
     
 	fPercentage = percentage;
         
@@ -109,16 +109,14 @@ ProgressDialog::CreateViews()
     	fBarberPole->SetLowColor(kLowColor);
     }
 
-    AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
+    AddChild(BGroupLayoutBuilder(B_VERTICAL, 5)
         .Add(fTextLabel)
         .Add(fPulsate ? (BView*)fBarberPole : (BView*)fStatusBar)
         .AddGlue()
-        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
+        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
             .AddGlue()
             .Add(cancelButton)
-            .AddGlue()
             .Add(fOkayButton)
-            .AddGlue()
         )
         .SetInsets(5, 5, 5, 5)
     );

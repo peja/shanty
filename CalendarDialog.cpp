@@ -15,8 +15,8 @@
 extern char kOk[];
 extern char kCancel[];
 
-const char kCalendarTitle[] = "Calendar selection";
-const char kCalendarText[]  = "Select a date from below.";
+const BString kCalendarTitle = "Calendar selection";
+const BString kCalendarText  = "Select a date from below.";
 
 
 void
@@ -56,14 +56,16 @@ CalendarDialog::SetDate(int day, int month, int year, bool initial)
 }
 
 
-CalendarDialog::CalendarDialog(char* title, float width, float height,
-                         char* text, int day, int month, int year, char* format, BString windowIcon)
-                         : Dialog(title, windowIcon, width, height)
+CalendarDialog::CalendarDialog(BString const & title, float width, float height,
+	BString const & text, int day, int month, int year, BString const & format,
+	BString const & windowIcon)
+    :
+    Dialog(title, windowIcon, width, height)
 {
-    if (title == NULL)
+    if (title.Length() == 0)
         SetTitle(kCalendarTitle);
     
-    fText = (text != NULL ? text : kCalendarText);
+    fText = (text > 0 ? text : kCalendarText);
     
     if (width < 1.0)
         width = 200;
@@ -103,20 +105,18 @@ CalendarDialog::CreateViews()
         
     fmonthView = new MonthWindowView(fDay, fMonth, fYear, 0, 10000);
 
-    AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
+    AddChild(BGroupLayoutBuilder(B_VERTICAL, 5)
         .Add(textLabel)
-        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
+        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
             .AddGlue()
             .Add(fmonthView)
             .AddGlue()
          )
         .AddGlue()
-        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
+        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
             .AddGlue()
             .Add(cancelButton)
-            .AddGlue()
             .Add(okayButton)
-            .AddGlue()
         )
         .SetInsets(5, 5, 5, 5)
     );

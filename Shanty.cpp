@@ -4,11 +4,11 @@
  * All rights reserved. Distributed under the terms of the MIT License.
  */
 
-#include <app/Application.h>
-#include <interface/Alert.h>
-#include <storage/Path.h>
-#include <storage/FilePanel.h>
-#include <storage/File.h>
+#include <Application.h>
+#include <Alert.h>
+#include <Path.h>
+#include <FilePanel.h>
+#include <File.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +30,7 @@
 #include "ProgressDialog.h"
 
 
-#define SHANTY_VERSION "0.3"
+#define SHANTY_VERSION "0.4"
 
 const char* kSignature = "application/x-vnd.Shanty";
 

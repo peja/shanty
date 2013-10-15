@@ -12,18 +12,19 @@
 extern char kOk[];
 extern char kCancel[];
 
-const char kScaleTitle[] = "Adjust the scale value";
+const BString kScaleTitle = "Adjust the scale value";
 
 
-ScaleDialog::ScaleDialog(char* title, float width, float height,
-                         char* text, int32 value, int32 minValue, int32 maxValue,
-                         int32 step, bool printPartial, bool hideValue, BString windowIcon)
-                         : Dialog(title, windowIcon, width, height)
+ScaleDialog::ScaleDialog(BString const & title, float width, float height,
+	BString const & text, int32 value, int32 minValue, int32 maxValue,
+	int32 step, bool printPartial, bool hideValue, BString const & windowIcon)
+	:
+	Dialog(title, windowIcon, width, height)
 {
-    if (title == NULL)
+    if (title.Length() == 0)
         SetTitle(kScaleTitle);
     
-    fText = (text != NULL ? text : kScaleTitle);
+    fText = (text.Length() > 0 ? text : kScaleTitle);
     
     fMinValue = (minValue >= 0 ? minValue : 0);
         			
@@ -86,7 +87,7 @@ ScaleDialog::CreateViews()
                     BRect(0, 0, 1, 1), NULL, val.String());               
     }
     
-    BGroupLayoutBuilder builder = BGroupLayoutBuilder(B_VERTICAL, 10).Add(textLabel);
+    BGroupLayoutBuilder builder = BGroupLayoutBuilder(B_VERTICAL, 5).Add(textLabel);
 
 	if (!fHideValue)
 		builder.Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
@@ -99,12 +100,10 @@ ScaleDialog::CreateViews()
 
     AddChild(
         builder.AddGlue()
-        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
+        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
             .AddGlue()
             .Add(cancelButton)
-            .AddGlue()
             .Add(okayButton)
-            .AddGlue()
         )
         .SetInsets(5, 5, 5, 5)
     );

@@ -15,20 +15,24 @@
 extern char kOk[];
 extern char kCancel[];
 
-const BString kColorTitle = BString("Color selection");
+const BString kColorTitle = "Color selection";
 
-const uint32 MSG_COLOR_CHANGED = 'clrc';
-const uint32 MSG_HEX_COLOR_CHANGED = 'hclc';
+enum
+{
+	MSG_COLOR_CHANGED = 'clrc',
+	MSG_HEX_COLOR_CHANGED = 'hclc',
+};
 
-ColorDialog::ColorDialog(BString title, float width, float height,
-						 rgb_color color, BString windowIcon)
+ColorDialog::ColorDialog(BString const & title, float width, float height,
+						 rgb_color color, BString const & windowIcon)
 						:
-						fColor(color),
 						Dialog(title, windowIcon, width, height)
 {
 	if (title.Length() == 0) {
 		SetTitle(kColorTitle);
 	}
+	
+	fColor = color;
 	
 	if (width < 1.0) {
 		width = 200;
@@ -78,9 +82,7 @@ ColorDialog::CreateViews()
 		.Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
 			.AddGlue()
 			.Add(cancelButton)
-			.AddGlue()
 			.Add(okayButton)
-			.AddGlue()
 		)
 		.SetInsets(5, 5, 5, 5)
 	);

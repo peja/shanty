@@ -8,9 +8,8 @@
 #ifndef	PROGRESS_DIALOG_H
 #define	PROGRESS_DIALOG_H
 
-#include <support/String.h>
-#include <interface/StatusBar.h>
-#include <interface/StringView.h>
+#include <StatusBar.h>
+#include <StringView.h>
 
 #include "BarberPole/BarberPole.h"
 #include "Dialog.h"
@@ -19,41 +18,37 @@
 class ProgressDialog : public Dialog
 {
 public:
+							ProgressDialog(BString const & title, float width, float height,
+								BString const & text, int percentage, bool pulsate, bool autoClose,
+								bool noCancel, BString const & windowIcon);
 
-    ProgressDialog(char* title, float width, float height, char* text,
-                   int percentage, bool pulsate, bool autoClose, bool noCancel, BString windowIcon);
-                
+    		void			MessageReceived(BMessage* msg);
+    		void			CreateViews();
+    		void			InitControls();
     
-    void MessageReceived(BMessage* msg);
-    void CreateViews();
-    void InitControls();
-    
-    void FrameResized(float width, float height);
-	bool QuitRequested();
+    		void			FrameResized(float width, float height);
+			bool			QuitRequested();
     
 private:
-
-	static int32 _ReadInputThread(void* data);
-	static void _EndThread();
+	static	int32			_ReadInputThread(void* data);
+	static	void			_EndThread();
 	
-	void _ProcessLine(const BString& line);
-	void _EndInput();
-    
-private:
+			void			_ProcessLine(const BString& line);
+			void			_EndInput();
 
-	static ProgressDialog* fInstance;
-    static thread_id fThreadId;
+	static	ProgressDialog*	fInstance;
+    static	thread_id		fThreadId;
     
-    const char* fText;
-    int fPercentage;
-    bool fPulsate;
-    bool fAutoClose;
-    bool fNoCancel;
+    		BString			fText;
+    		int				fPercentage;
+    		bool			fPulsate;
+    		bool			fAutoClose;
+    		bool			fNoCancel;
     
-    BStringView* fTextLabel;
-    BStatusBar* fStatusBar;
-    BButton* fOkayButton;
-    BarberPole* fBarberPole;
+    		BStringView*	fTextLabel;
+    		BStatusBar*		fStatusBar;
+			BButton*		fOkayButton;
+			BarberPole*		fBarberPole;
 };
 
 #endif	// PROGRESS_DIALOG_H

@@ -14,15 +14,15 @@
 
 class ColorDialog : public Dialog {
 public:
-					ColorDialog(BString title, float width, float height,
-								rgb_color color, BString windowIcon);
+					ColorDialog(BString const & title, float width, float height,
+						rgb_color color, BString const & windowIcon);
 	
 	void			MessageReceived(BMessage* msg);
 	void 			CreateViews();
 	void 			InitControls();
 	
 private:
-	const rgb_color	fColor;
+	rgb_color		fColor;
 
 	BView*			fColorView;
 	BColorControl* 	fColorControl;

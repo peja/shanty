@@ -15,16 +15,19 @@
 #include <SpaceLayoutItem.h>
 #include <String.h>
 
-enum { MSG_OK_CLICKED=1000, MSG_CANCEL_CLICKED };
+enum
+{
+	MSG_OK_CLICKED = 'okcl',
+	MSG_CANCEL_CLICKED = 'cacl',
+};
 
 class Dialog : public BWindow {
 public:
-
-    Dialog(BString title, BString windowIcon, float width, float height);
-    virtual bool QuitRequested();
+    				Dialog(BString const & title, BString const & windowIcon,
+    					float width, float height);
+    virtual bool	QuitRequested();
     
-    void CenterOnScreen();
-
+    void			CenterOnScreen();
 };
 
 #endif	// DIALOG_H

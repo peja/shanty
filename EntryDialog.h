@@ -7,8 +7,8 @@
 #ifndef	ENTRY_DIALOG_H
 #define	ENTRY_DIALOG_H
 
-#include <interface/StringView.h>
-#include <interface/TextControl.h>
+#include <StringView.h>
+#include <TextControl.h>
 
 #include "Dialog.h"
 
@@ -17,21 +17,20 @@ class EntryDialog : public Dialog
 {
 public:
 
-    EntryDialog(char* title, float width, float height,
-                char* text, char* entryText, bool hideText, BString windowIcon);
-                
+    				EntryDialog(BString const & title, float width, float height,
+						BString const & text, BString const & entryText, bool hideText,
+						BString const & windowIcon);        
     
-    void MessageReceived(BMessage* msg);
-    void CreateViews();
-    void InitControls();
+    void			MessageReceived(BMessage* msg);
+    void			CreateViews();
+    void			InitControls();
     
 private:
+    BString			fText;
+    BString			fEntryText;
+    bool			fHideText;
     
-    const char* fText;
-    const char* fEntryText;
-    bool fHideText;
-    
-    BTextControl* fEntry;
+    BTextControl*	fEntry;
 };
 
 #endif	// ENTRY_DIALOG_H

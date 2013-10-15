@@ -15,9 +15,11 @@ Dialog::CenterOnScreen()
 }
 
 
-Dialog::Dialog(BString title, BString windowIcon, float width, float height)
-    : BWindow(BRect(0, 0, width, height), title.String(), B_TITLED_WINDOW, 
-    B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
+Dialog::Dialog(BString const & title, BString const & windowIcon,
+	float width, float height)
+	:
+    BWindow(BRect(0, 0, width, height), title.String(), B_TITLED_WINDOW, 
+		B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	SetLayout(new BGroupLayout(B_HORIZONTAL, 0));
 	
