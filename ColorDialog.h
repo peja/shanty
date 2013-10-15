@@ -8,13 +8,14 @@
 #include <ColorControl.h>
 #include <SupportDefs.h>
 #include <TextControl.h>
+#include <String.h>
 
 #include "Dialog.h"
 
 class ColorDialog : public Dialog {
 public:
 					ColorDialog(BString title, float width, float height,
-								rgb_color color);
+								rgb_color color, BString windowIcon);
 	
 	void			MessageReceived(BMessage* msg);
 	void 			CreateViews();

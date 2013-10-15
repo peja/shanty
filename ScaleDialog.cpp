@@ -1,7 +1,9 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
+
 
 #include <support/String.h>
 #include <stdio.h>
@@ -15,8 +17,8 @@ const char kScaleTitle[] = "Adjust the scale value";
 
 ScaleDialog::ScaleDialog(char* title, float width, float height,
                          char* text, int32 value, int32 minValue, int32 maxValue,
-                         int32 step, bool printPartial, bool hideValue)
-                         : Dialog(title, width, height)
+                         int32 step, bool printPartial, bool hideValue, BString windowIcon)
+                         : Dialog(title, windowIcon, width, height)
 {
     if (title == NULL)
         SetTitle(kScaleTitle);
@@ -83,10 +85,6 @@ ScaleDialog::CreateViews()
     	fValueLabel = new BStringView(
                     BRect(0, 0, 1, 1), NULL, val.String());               
     }
-        
-        
-    // Build the layout
-    SetLayout(new BGroupLayout(B_HORIZONTAL));
     
     BGroupLayoutBuilder builder = BGroupLayoutBuilder(B_VERTICAL, 10).Add(textLabel);
 

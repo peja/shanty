@@ -29,8 +29,8 @@ ProgressDialog::fThreadId = 0;
 
 
 ProgressDialog::ProgressDialog(char* title, float width, float height, char* text,
-                               int percentage, bool pulsate, bool autoClose, bool noCancel)
-                         : Dialog(title, width, height)
+                               int percentage, bool pulsate, bool autoClose, bool noCancel, BString windowIcon)
+                         : Dialog(title, windowIcon, width, height)
 {
     if (title == NULL)
         SetTitle(kProgressTitle);
@@ -107,11 +107,7 @@ ProgressDialog::CreateViews()
     	
     	fBarberPole->SetHighColor(kHighColor);
     	fBarberPole->SetLowColor(kLowColor);
-    }			 
-    			 
-        
-    // Build the layout
-    SetLayout(new BGroupLayout(B_HORIZONTAL));
+    }
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
         .Add(fTextLabel)

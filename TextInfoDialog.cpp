@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
 #include <stdio.h>
@@ -47,8 +48,8 @@ TextInfoDialog::fThreadId = 0;
 
 
 TextInfoDialog::TextInfoDialog(char* title, float width, float height,
-                         	   char* fileName, bool editable, bool fixedFont)
-                         : Dialog(title, width, height)
+                         	   char* fileName, bool editable, bool fixedFont, BString windowIcon)
+                         : Dialog(title, windowIcon, width, height)
 {
     if (title == NULL)
         SetTitle(kTextInfoTitle);
@@ -98,9 +99,6 @@ TextInfoDialog::CreateViews()
         
     scrollView->SetExplicitMaxSize(
         BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
-        
-    // Build the layout
-    SetLayout(new BGroupLayout(B_HORIZONTAL));
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
         .Add(scrollView)

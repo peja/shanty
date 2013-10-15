@@ -9,6 +9,7 @@
 #include <String.h>
 
 #include "ColorDialog.h"
+#include "IconPanel.h"
 #include "utils.h"
 
 extern char kOk[];
@@ -20,10 +21,10 @@ const uint32 MSG_COLOR_CHANGED = 'clrc';
 const uint32 MSG_HEX_COLOR_CHANGED = 'hclc';
 
 ColorDialog::ColorDialog(BString title, float width, float height,
-						 rgb_color color)
+						 rgb_color color, BString windowIcon)
 						:
 						fColor(color),
-						Dialog(title.String(), width, height)
+						Dialog(title, windowIcon, width, height)
 {
 	if (title.Length() == 0) {
 		SetTitle(kColorTitle);
@@ -66,8 +67,6 @@ ColorDialog::CreateViews()
 	fColorHex = new BTextControl(
 		BRect(0, 1, 80, 1), "colorHex", "Hex:", "", new BMessage(MSG_HEX_COLOR_CHANGED),
 		B_FOLLOW_RIGHT);
-	
-	SetLayout(new BGroupLayout(B_HORIZONTAL));
 	
 	AddChild(BGroupLayoutBuilder(B_VERTICAL, 5)
 		.Add(fColorControl)

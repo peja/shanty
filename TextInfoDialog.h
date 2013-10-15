@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
  
 #ifndef	TEXT_INFO_DIALOG_H
@@ -26,7 +27,7 @@ class TextInfoDialog : public Dialog
 public:
 
     TextInfoDialog(char* title, float width, float height,
-                   char* fileName, bool editable, bool fixedFont);
+                   char* fileName, bool editable, bool fixedFont, BString windowIcon);
                 
     
     void MessageReceived(BMessage* msg);

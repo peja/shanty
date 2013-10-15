@@ -7,19 +7,20 @@
 #ifndef	DIALOG_H
 #define	DIALOG_H
 
-#include <app/Application.h>
-#include <interface/Window.h>
-#include <interface/Button.h>
-#include <interface/GroupLayout.h>
-#include <interface/GroupLayoutBuilder.h>
-#include <interface/SpaceLayoutItem.h>
+#include <Application.h>
+#include <Window.h>
+#include <Button.h>
+#include <GroupLayout.h>
+#include <GroupLayoutBuilder.h>
+#include <SpaceLayoutItem.h>
+#include <String.h>
 
 enum { MSG_OK_CLICKED=1000, MSG_CANCEL_CLICKED };
 
 class Dialog : public BWindow {
 public:
 
-    Dialog(const char* title, float width, float height);
+    Dialog(BString title, BString windowIcon, float width, float height);
     virtual bool QuitRequested();
     
     void CenterOnScreen();

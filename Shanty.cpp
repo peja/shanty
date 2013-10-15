@@ -16,6 +16,8 @@
 #include <getopt.h>
 #include <sys/select.h>
 
+#include <exception>
+
 #include "shanty_help.h"
 
 #include "utils.h"
@@ -55,7 +57,7 @@ enum Parameters { kDummy=2, kTitle, kWidth, kHeight, kTimeout, kText, kColor, kD
                   kMonth, kYear, kDateFormat, kEntryText, kFilename,
                   kSeparator, kColumn, kPrintColumn, kHideColumn,
                   kPercentage, kValue, kMinValue, kMaxValue, kStep,
-                  kOkLabel, kCancelLabel };
+                  kOkLabel, kCancelLabel, kWindowIcon };
 
 class Shanty : public BApplication {
     public:
@@ -91,6 +93,7 @@ class Shanty : public BApplication {
         char* fOkLabel;
         char* fCancelLabel;
         char* fColor;
+        char* fWindowIcon;
         
         int fResponseType;
         int fNoWrap;
@@ -138,6 +141,7 @@ Shanty::Shanty()
     fOkLabel(kYes),
     fCancelLabel(kNo),
 	fColor(NULL),
+	fWindowIcon(NULL),
     
     fResponseType(kNone),
     fNoWrap(0),
@@ -250,13 +254,13 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           {"step",            required_argument, 0, kStep},
           {"ok-label",        required_argument, 0, kOkLabel},
           {"cancel-label",    required_argument, 0, kCancelLabel},
+          {"window-icon",     required_argument, 0, kWindowIcon},
           
           
           // Dummy options
           
           {"confirm-overwrite",    no_argument, 0, kDummy},
           {"file-filter",    required_argument, 0, kDummy},
-          {"window-icon",    required_argument, 0, kDummy},
           {"class",          required_argument, 0, kDummy},
           {"name",           required_argument, 0, kDummy},
           {"screen",         required_argument, 0, kDummy},
@@ -316,6 +320,11 @@ Shanty::ArgvReceived(int32 argc, char** argv)
         		
         case kColor:
         		fColor = strdup(optarg);
+        		
+        		break;
+        		
+        case kWindowIcon:
+        		fWindowIcon = strdup(optarg);
         		
         		break;
         		
@@ -568,7 +577,7 @@ Shanty::ReadyToRun()
             
             case kEntry:
             {
-            	fDialog = new EntryDialog(fTitle, fWidth, fHeight, fText, fEntryText, fHideText);
+            	fDialog = new EntryDialog(fTitle, fWidth, fHeight, fText, fEntryText, fHideText, BString(fWindowIcon));
             	
             	fDialog->Show();
             	
@@ -578,7 +587,7 @@ Shanty::ReadyToRun()
             case kCalendar:
             {
             	fDialog = new CalendarDialog(fTitle, fWidth, fHeight, fText,
-            								 fDay, fMonth, fYear, fDateFormat);
+            								 fDay, fMonth, fYear, fDateFormat, BString(fWindowIcon));
             	
             	fDialog->Show();
             	
@@ -589,7 +598,7 @@ Shanty::ReadyToRun()
             {
             	rgb_color color = hex_string_to_rgb_color(fColor);
             	
-            	fDialog = new ColorDialog(BString(fTitle), fWidth, fHeight, color);
+            	fDialog = new ColorDialog(BString(fTitle), fWidth, fHeight, color, BString(fWindowIcon));
             	
             	fDialog->Show();
             	
@@ -599,7 +608,7 @@ Shanty::ReadyToRun()
             case kTextInfo:
         	{
         		fDialog = new TextInfoDialog(fTitle, fWidth, fHeight,
-        									 fFilename, fEditable, fFixedFont);
+        									 fFilename, fEditable, fFixedFont, BString(fWindowIcon));
             	
             	fDialog->Show();
             	
@@ -610,7 +619,7 @@ Shanty::ReadyToRun()
         	{
         		fDialog = new ScaleDialog(fTitle, fWidth, fHeight, fText,
         								  fValue, fMinValue, fMaxValue, fStep,
-        								  fPrintPartial, fHideValue);
+        								  fPrintPartial, fHideValue, BString(fWindowIcon));
         		
             	fDialog->Show();
             	
@@ -620,7 +629,7 @@ Shanty::ReadyToRun()
         	case kProgress:
         	{
         		fDialog = new ProgressDialog(fTitle, fWidth, fHeight, fText,
-        									 fPercentage, fPulsate, fAutoClose, fNoCancel);
+        									 fPercentage, fPulsate, fAutoClose, fNoCancel, BString(fWindowIcon));
         									 
         		fDialog->Show();
         		
@@ -800,7 +809,13 @@ main(int argc, char** argv)
     if (app.InitCheck() != B_OK)
         return -1;
 
-    app.Run();
+	try {
+    	app.Run();
+	}
+    catch(std::exception &e) {
+    	fprintf(stdout, "%s\n", e.what());
+    	return -1;
+    }
 
 	if (app.AutoKill())
 		kill(getppid(), SIGHUP);

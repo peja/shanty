@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
 #include <stdio.h>
@@ -13,8 +14,8 @@ const char kEntryTitle[] = "Add a new entry";
 const char kEntryInitialText[]  = "Enter new text:";
 
 EntryDialog::EntryDialog(char* title, float width, float height,
-                         char* text, char* entryText, bool hideText)
-                         : Dialog(title, width, height)
+                         char* text, char* entryText, bool hideText, BString windowIcon)
+                         : Dialog(title, windowIcon, width, height)
 {
     if (title == NULL)
         SetTitle(kEntryTitle);
@@ -66,9 +67,6 @@ EntryDialog::CreateViews()
     			 
     fEntry->SetExplicitMaxSize(
         BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
-        
-    // Build the layout
-    SetLayout(new BGroupLayout(B_HORIZONTAL));
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
         .Add(textLabel)

@@ -1,7 +1,9 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
+
  
 #ifndef	PROGRESS_DIALOG_H
 #define	PROGRESS_DIALOG_H
@@ -19,7 +21,7 @@ class ProgressDialog : public Dialog
 public:
 
     ProgressDialog(char* title, float width, float height, char* text,
-                   int percentage, bool pulsate, bool autoClose, bool noCancel);
+                   int percentage, bool pulsate, bool autoClose, bool noCancel, BString windowIcon);
                 
     
     void MessageReceived(BMessage* msg);

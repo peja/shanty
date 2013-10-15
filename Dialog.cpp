@@ -5,8 +5,8 @@
  */
 
 #include "Dialog.h"
+#include "IconPanel.h"
 #include "utils.h"
-
 
 void
 Dialog::CenterOnScreen()
@@ -15,10 +15,21 @@ Dialog::CenterOnScreen()
 }
 
 
-Dialog::Dialog(const char* title, float width, float height)
-    : BWindow(BRect(0, 0, width, height), title, B_TITLED_WINDOW, 
+Dialog::Dialog(BString title, BString windowIcon, float width, float height)
+    : BWindow(BRect(0, 0, width, height), title.String(), B_TITLED_WINDOW, 
     B_ASYNCHRONOUS_CONTROLS | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
-{}
+{
+	SetLayout(new BGroupLayout(B_HORIZONTAL, 0));
+	
+	if (windowIcon.Length() > 0) {
+		IconPanel *iconPanel = new IconPanel(windowIcon);
+	
+		AddChild(iconPanel);
+	
+		GetLayout()->ItemAt(0)->SetExplicitMaxSize(
+			BSize(kBorderWidth + kBorderMargin, B_SIZE_UNLIMITED));
+	}
+}
 
 
 bool

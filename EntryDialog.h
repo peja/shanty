@@ -1,8 +1,9 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
- 
+
 #ifndef	ENTRY_DIALOG_H
 #define	ENTRY_DIALOG_H
 
@@ -17,7 +18,7 @@ class EntryDialog : public Dialog
 public:
 
     EntryDialog(char* title, float width, float height,
-                char* text, char* entryText, bool hideText);
+                char* text, char* entryText, bool hideText, BString windowIcon);
                 
     
     void MessageReceived(BMessage* msg);

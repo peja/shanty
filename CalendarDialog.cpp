@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
 #include <support/String.h>
@@ -56,8 +57,8 @@ CalendarDialog::SetDate(int day, int month, int year, bool initial)
 
 
 CalendarDialog::CalendarDialog(char* title, float width, float height,
-                         char* text, int day, int month, int year, char* format)
-                         : Dialog(title, width, height)
+                         char* text, int day, int month, int year, char* format, BString windowIcon)
+                         : Dialog(title, windowIcon, width, height)
 {
     if (title == NULL)
         SetTitle(kCalendarTitle);
@@ -101,10 +102,6 @@ CalendarDialog::CreateViews()
         BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
         
     fmonthView = new MonthWindowView(fDay, fMonth, fYear, 0, 10000);
-    
-        
-    // Build the layout
-    SetLayout(new BGroupLayout(B_HORIZONTAL));
 
     AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
         .Add(textLabel)
