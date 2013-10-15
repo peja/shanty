@@ -7,6 +7,7 @@
 
 #include <ColorControl.h>
 #include <SupportDefs.h>
+#include <TextControl.h>
 
 #include "Dialog.h"
 
@@ -22,7 +23,9 @@ public:
 private:
 	const rgb_color	fColor;
 
+	BView*			fColorView;
 	BColorControl* 	fColorControl;
+	BTextControl*	fColorHex;
 };
 
 #endif // COLOR_DIALOG_H

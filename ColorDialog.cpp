@@ -4,6 +4,7 @@
  */
  
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <String.h>
 
@@ -13,6 +14,9 @@ extern char kOk[];
 extern char kCancel[];
 
 const BString kColorTitle = BString("Color selection");
+
+const int32 MSG_COLOR_CHANGED = 'clrc';
+const int32 MSG_HEX_COLOR_CHANGED = 'hclc';
 
 ColorDialog::ColorDialog(BString title, float width, float height,
 						 rgb_color color)
@@ -52,15 +56,26 @@ ColorDialog::CreateViews()
 		BRect(0, 1, 80, 1), "cancelButton", kCancel, new BMessage(MSG_CANCEL_CLICKED),
 		B_FOLLOW_RIGHT);
 		
-	fColorControl = new BColorControl(
-		BPoint(1, 1), B_CELLS_32x8, 4, "colorSelection", NULL, false);
+	fColorView = new BView(
+		BRect(0, 1, 80, 20), "colorView", B_FOLLOW_LEFT, B_SUPPORTS_LAYOUT);
 		
+	fColorControl = new BColorControl(
+		BPoint(1, 1), B_CELLS_32x8, 4, "colorSelection", new BMessage(MSG_COLOR_CHANGED), false);
+	
+	fColorHex = new BTextControl(
+		BRect(0, 1, 80, 1), "colorHex", "Hex:", "", new BMessage(MSG_HEX_COLOR_CHANGED),
+		B_FOLLOW_RIGHT);
+	
 	SetLayout(new BGroupLayout(B_HORIZONTAL));
 	
-	AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
+	AddChild(BGroupLayoutBuilder(B_VERTICAL, 5)
 		.Add(fColorControl)
+		.Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
+			.Add(fColorView)
+			.Add(fColorHex)
+		)
 		.AddGlue()
-		.Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
+		.Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
 			.AddGlue()
 			.Add(cancelButton)
 			.AddGlue()
@@ -77,6 +92,11 @@ ColorDialog::InitControls()
 	Lock();
 	
 	fColorControl->SetValue(fColor);
+	fColorControl->Looper()->PostMessage(MSG_COLOR_CHANGED);
+		// update ColorView and ColorHex
+	
+	fColorHex->SetAlignment(B_ALIGN_RIGHT, B_ALIGN_LEFT);
+	fColorHex->SetModificationMessage(new BMessage(MSG_HEX_COLOR_CHANGED));
 	
 	CenterOnScreen();
 	
@@ -87,25 +107,62 @@ void ColorDialog::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case MSG_OK_CLICKED:
-			fprintf(stdout, "#%x%x%x%x%x%x\n",
-				fColorControl->ValueAsColor().red,
-				fColorControl->ValueAsColor().red,
-				fColorControl->ValueAsColor().green,
-				fColorControl->ValueAsColor().green,
-				fColorControl->ValueAsColor().blue,
-				fColorControl->ValueAsColor().blue);
+		{
+			rgb_color color = fColorControl->ValueAsColor();
+			fprintf(stdout, "#%02x%02x%02x%02x%02x%02x\n", color.red, color.red,
+				color.green, color.green, color.blue, color.blue);
 				// zenity-compatible format
 			
 			be_app->PostMessage(MSG_OK_CLICKED);
 			Quit();
 			
 			break;
+		}
 		
 		case MSG_CANCEL_CLICKED:
 			be_app->PostMessage(MSG_CANCEL_CLICKED);
 			Quit();
 			
 			break;
+			
+		case MSG_COLOR_CHANGED:
+		{
+			rgb_color color = fColorControl->ValueAsColor();
+			
+			fColorView->SetViewColor(color);
+			fColorView->Invalidate();
+			
+			char hex_color[8];
+			sprintf(hex_color, "#%02X%02X%02X", color.red, color.green, color.blue);
+			
+			fColorHex->SetText(hex_color);
+			
+			break;
+		}
+		
+		case MSG_HEX_COLOR_CHANGED:
+		{
+			BString red, green, blue;
+            BString color_str = BString(fColorHex->Text());
+            
+            if (color_str.Length() != 7)
+            	break;
+            	
+            color_str.CopyInto(red, 1, 2);
+            color_str.CopyInto(green, 3, 2);
+            color_str.CopyInto(blue, 5, 2);
+            	
+            rgb_color color;
+            color.red = strtol(red.String(), NULL, 16);
+            color.green = strtol(green.String(), NULL, 16);
+            color.blue = strtol(blue.String(), NULL, 16);
+            color.alpha = 255;
+            
+            fColorControl->SetValue(color);
+            
+            fColorView->SetViewColor(color);
+            fColorView->Invalidate();
+		}
 			
 		default:
 			Dialog::MessageReceived(message);
