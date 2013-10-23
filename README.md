@@ -24,7 +24,7 @@ For most of the dialogs, these general options are available:
     --width=WIDTH               Set the width
     --height=HEIGHT             Set the height
     --timeout=TIMEOUT           Set dialog timeout in seconds
-    --window-icon=ICON_PATH     Set the icon that is displayed in the window frame of the dialog. You can use 4 stock icons: 'info', 'warning', 'question' and 'error'.
+    --window-icon=ICON_PATH     Set the icon that is displayed in the window frame of the dialog (vector icons only). You can use 4 stock icons: 'info', 'warning', 'question' and 'error'.
 
   
 Info, Warning, Error

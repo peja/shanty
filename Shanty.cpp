@@ -319,7 +319,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
         		break;
         		
         case kColor:
-        		fColor = strdup(optarg);
+        		fColor = strdup(optarg + 1); // without '#'
         		
         		break;
         		

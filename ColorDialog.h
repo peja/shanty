@@ -27,6 +27,9 @@ private:
 	BView*			fColorView;
 	BColorControl* 	fColorControl;
 	BTextControl*	fColorHex;
+	BTextControl*	fColorHue;
+	BTextControl*	fColorSaturation;
+	BTextControl*	fColorValue;
 };
 
 #endif // COLOR_DIALOG_H

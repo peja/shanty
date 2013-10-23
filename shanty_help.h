@@ -10,7 +10,7 @@ const char* usage_text =
 "  --width=WIDTH               Set the width\n"
 "  --height=HEIGHT             Set the height\n"
 "  --timeout=TIMEOUT           Set dialog timeout in seconds\n"
-"  --window-icon=ICON_PATH     Set the icon that is displayed in the window frame of the dialog. You can use 4 stock icons: 'info', 'warning', 'question' and 'error'\n"
+"  --window-icon=ICON_PATH     Set the icon that is displayed in the window frame of the dialog (vector icons only). You can use 4 stock icons: 'info', 'warning', 'question' and 'error'\n"
 "\n"
 "Calendar options\n"
 "  --calendar                  Display calendar dialog\n"
