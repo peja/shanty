@@ -28,6 +28,7 @@
 #include "TextInfoDialog.h"
 #include "ScaleDialog.h"
 #include "ProgressDialog.h"
+#include "Notification.h"
 
 
 #define SHANTY_VERSION "0.4"
@@ -636,8 +637,18 @@ Shanty::ReadyToRun()
         		break;
         	}
         	
-            case kList:
+        	
             case kNotification:
+            {
+            	Notification notification(fTitle, fText, fWindowIcon, fTimeout);
+            	notification.Notify();
+            	
+            	be_app->PostMessage(B_QUIT_REQUESTED);
+            	
+            	break;
+            }
+        	
+            case kList:
             {	
             	fprintf(stderr, "Bummer! Option is not yet implemented...\n");
             	

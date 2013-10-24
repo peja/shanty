@@ -191,5 +191,8 @@ Not yet implemented...
 Notification icon
 -----------------
 
-Not yet implemented...
+This is used to notify user about events.
 
+    --notification              Display notification
+
+    --text=TEXT                 Set the notification text
