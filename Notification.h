@@ -5,20 +5,22 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
+#include <Bitmap.h>
 #include <String.h>
 #include <SupportDefs.h>
 
 class Notification {
 public:
-			Notification(BString const & title, BString const & text,
-				BString const & windowIcon, int32 timeout);
+				Notification(BString const & title, BString const & text,
+					BString const & windowIcon, int32 timeout);
 	
-	void	Notify();
+	void		Notify();
 private:
-	BString	fTitle;
-	BString	fText;
-	BString	fWindowIcon;
-	int32	fTimeout;
+	BString		fTitle;
+	BString		fText;
+	BString		fWindowIcon;
+	int32		fTimeout;
+	BBitmap*	fIcon;
 };
 
 #endif // NOTIFICATION_H

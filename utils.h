@@ -7,6 +7,8 @@
 #ifndef	UTILS_H
 #define	UTILS_H
 
+#include <Bitmap.h>
+#include <String.h>
 #include <Window.h>
 
 struct hsv_color {
@@ -19,6 +21,7 @@ void		center_on_screen(BWindow* window);
 rgb_color	hex_string_to_rgb_color(BString const &hex);
 hsv_color	rgb_to_hsv_color(rgb_color const &color);
 rgb_color	hsv_to_rgb_color(hsv_color const &color);
+void		get_vector_icon(BString const& icon, BBitmap* bitmap);
 ssize_t		read_stdin_nonblocking(char* str, size_t size);
 
 #endif	// UTILS_H
