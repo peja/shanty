@@ -75,7 +75,7 @@ CalendarDialog::CalendarDialog(BString const & title, float width, float height,
         
     SetDate(day, month, year, true);
     
-    fFormat = (format != NULL ? format : "%x");
+    fFormat = (format != NULL ? format : BString("%x"));
     
     CreateViews();
     
@@ -144,7 +144,7 @@ CalendarDialog::MessageReceived(BMessage* message)
         	char buffer[len];
 
 			SetDate(fDay, fMonth, fYear);
-			strftime (buffer, len - 1, fFormat, timeinfo);
+			strftime (buffer, len - 1, fFormat.String(), timeinfo);
         	fprintf(stdout, "%s\n", buffer);
         
             be_app->PostMessage(MSG_OK_CLICKED);
