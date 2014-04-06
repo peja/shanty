@@ -24,6 +24,7 @@ For most of the dialogs, these general options are available:
     --width=WIDTH               Set the width
     --height=HEIGHT             Set the height
     --timeout=TIMEOUT           Set dialog timeout in seconds
+    --window-icon=ICON_PATH     Set the icon that is displayed in the window frame of the dialog (vector icons only). You can use 4 stock icons: 'info', 'warning', 'question' and 'error'.
 
   
 Info, Warning, Error
@@ -121,6 +122,15 @@ This dialog is used for selecting a date. Selected date is sent to standard outp
     
 ![Calendar](https://github.com/peja/shanty/raw/master/doc/img/calendar.png) 
 
+Color selection
+--------------
+
+This dialog is used for selecting colors. Available options are:
+
+    --color-selection           Display color selection dialog
+    
+    --color=COLOR               Set initial color (ex: #ababab)
+
 
 File selection
 --------------
@@ -181,5 +191,8 @@ Not yet implemented...
 Notification icon
 -----------------
 
-Not yet implemented...
+This is used to notify user about events.
 
+    --notification              Display notification
+
+    --text=TEXT                 Set the notification text

@@ -2,12 +2,15 @@ LINK = g++ ;
 APP = shanty ;
 SOURCES = Shanty.cpp
           utils.cpp
+          IconPanel.cpp
           Dialog.cpp
           EntryDialog.cpp
           CalendarDialog.cpp
+          ColorDialog.cpp
           TextInfoDialog.cpp
           ScaleDialog.cpp
           ProgressDialog.cpp
+          Notification.cpp
           BarberPole/BarberPole.cpp ;
 		  
 Main $(APP) : $(SOURCES) ;

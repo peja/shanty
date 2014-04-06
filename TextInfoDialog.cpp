@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
 #include <stdio.h>
@@ -46,11 +47,12 @@ thread_id
 TextInfoDialog::fThreadId = 0;
 
 
-TextInfoDialog::TextInfoDialog(char* title, float width, float height,
-                         	   char* fileName, bool editable, bool fixedFont)
-                         : Dialog(title, width, height)
+TextInfoDialog::TextInfoDialog(BString const & title, float width, float height,
+	BString const & fileName, bool editable, bool fixedFont, BString const & windowIcon)
+	:
+	Dialog(title, windowIcon, width, height)
 {
-    if (title == NULL)
+    if (title.Length() == 0)
         SetTitle(kTextInfoTitle);
         
     fFileName = fileName;
@@ -98,13 +100,10 @@ TextInfoDialog::CreateViews()
         
     scrollView->SetExplicitMaxSize(
         BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
-        
-    // Build the layout
-    SetLayout(new BGroupLayout(B_HORIZONTAL));
 
-    AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
+    AddChild(BGroupLayoutBuilder(B_VERTICAL, 5)
         .Add(scrollView)
-        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
+        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
             .AddGlue()
             .Add(closeButton)
         )

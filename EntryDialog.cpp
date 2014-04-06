@@ -1,6 +1,7 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
 #include <stdio.h>
@@ -9,19 +10,21 @@
 extern char kOk[];
 extern char kCancel[];
 
-const char kEntryTitle[] = "Add a new entry";
-const char kEntryInitialText[]  = "Enter new text:";
+const BString kEntryTitle = "Add a new entry";
+const BString kEntryInitialText = "Enter new text:";
 
-EntryDialog::EntryDialog(char* title, float width, float height,
-                         char* text, char* entryText, bool hideText)
-                         : Dialog(title, width, height)
+EntryDialog::EntryDialog(BString const & title, float width, float height,
+	BString const & text, BString const & entryText,
+	bool hideText, BString const & windowIcon)
+	:
+	Dialog(title, windowIcon, width, height)
 {
-    if (title == NULL)
+    if (title.Length() == 0)
         SetTitle(kEntryTitle);
     
     fText = text;
     
-    if (fText == NULL)
+    if (fText.Length() == 0)
         fText = kEntryInitialText;
         
     fEntryText = entryText;
@@ -66,20 +69,15 @@ EntryDialog::CreateViews()
     			 
     fEntry->SetExplicitMaxSize(
         BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
-        
-    // Build the layout
-    SetLayout(new BGroupLayout(B_HORIZONTAL));
 
-    AddChild(BGroupLayoutBuilder(B_VERTICAL, 10)
+    AddChild(BGroupLayoutBuilder(B_VERTICAL, 5)
         .Add(textLabel)
         .Add(fEntry)
         .AddGlue()
-        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 10)
+        .Add(BGroupLayoutBuilder(B_HORIZONTAL, 5)
             .AddGlue()
             .Add(cancelButton)
-            .AddGlue()
             .Add(okayButton)
-            .AddGlue()
         )
         .SetInsets(5, 5, 5, 5)
     );

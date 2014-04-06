@@ -1,13 +1,14 @@
 /*
- * Copyright 2010, Milos Pejovic. All rights reserved.
- * Distributed under the terms of the MIT License.
+ * Copyright 2013, Kacper Kasper, kacperkasper@gmail.com
+ * Copyright 2010, Milos Pejovic
+ * All rights reserved. Distributed under the terms of the MIT License.
  */
 
-#include <app/Application.h>
-#include <interface/Alert.h>
-#include <storage/Path.h>
-#include <storage/FilePanel.h>
-#include <storage/File.h>
+#include <Application.h>
+#include <Alert.h>
+#include <Path.h>
+#include <FilePanel.h>
+#include <File.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,18 +16,22 @@
 #include <getopt.h>
 #include <sys/select.h>
 
+#include <exception>
+
 #include "shanty_help.h"
 
 #include "utils.h"
 #include "Dialog.h"
+#include "ColorDialog.h"
 #include "EntryDialog.h"
 #include "CalendarDialog.h"
 #include "TextInfoDialog.h"
 #include "ScaleDialog.h"
 #include "ProgressDialog.h"
+#include "Notification.h"
 
 
-#define SHANTY_VERSION "0.3"
+#define SHANTY_VERSION "0.4"
 
 const char* kSignature = "application/x-vnd.Shanty";
 
@@ -45,15 +50,15 @@ char kErrorText[] = "An error has occurred.";
 
 
 
-enum ResponseTypes { kNone, kInfo, kCalendar, kEntry, kError, kFileSelection,
-                     kList, kNotification, kProgress, kQuestion, kWarning,
-                     kScale, kTextInfo, kHelp, kAbout, kVersion };
+enum ResponseTypes { kNone, kInfo, kCalendar, kColorSelection, kEntry, kError,
+                     kFileSelection, kList, kNotification, kProgress, kQuestion,
+                     kWarning, kScale, kTextInfo, kHelp, kAbout, kVersion };
                      
-enum Parameters { kDummy=2, kTitle, kWidth, kHeight, kTimeout, kText, kDay,
+enum Parameters { kDummy=2, kTitle, kWidth, kHeight, kTimeout, kText, kColor, kDay,
                   kMonth, kYear, kDateFormat, kEntryText, kFilename,
                   kSeparator, kColumn, kPrintColumn, kHideColumn,
                   kPercentage, kValue, kMinValue, kMaxValue, kStep,
-                  kOkLabel, kCancelLabel };
+                  kOkLabel, kCancelLabel, kWindowIcon };
 
 class Shanty : public BApplication {
     public:
@@ -88,6 +93,8 @@ class Shanty : public BApplication {
         char* fDateFormat;
         char* fOkLabel;
         char* fCancelLabel;
+        char* fColor;
+        char* fWindowIcon;
         
         int fResponseType;
         int fNoWrap;
@@ -134,6 +141,8 @@ Shanty::Shanty()
     fDateFormat(NULL),
     fOkLabel(kYes),
     fCancelLabel(kNo),
+	fColor(NULL),
+	fWindowIcon(NULL),
     
     fResponseType(kNone),
     fNoWrap(0),
@@ -186,6 +195,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           
           {"info",             no_argument,       &fResponseType, kInfo},
           {"calendar",         no_argument,       &fResponseType, kCalendar},
+          {"color-selection",  no_argument,		  &fResponseType, kColorSelection},
           {"entry",            no_argument,       &fResponseType, kEntry},
           {"file-selection",   no_argument,       &fResponseType, kFileSelection},
           {"list",             no_argument,       &fResponseType, kList},
@@ -227,6 +237,7 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           {"height",          required_argument, 0, kHeight},
           {"timeout",         required_argument, 0, kTimeout},
           {"text",            required_argument, 0, kText},
+          {"color",           required_argument, 0, kColor},
           {"day",             required_argument, 0, kDay},
           {"month",           required_argument, 0, kMonth},
           {"year",            required_argument, 0, kYear},
@@ -244,13 +255,13 @@ Shanty::ArgvReceived(int32 argc, char** argv)
           {"step",            required_argument, 0, kStep},
           {"ok-label",        required_argument, 0, kOkLabel},
           {"cancel-label",    required_argument, 0, kCancelLabel},
+          {"window-icon",     required_argument, 0, kWindowIcon},
           
           
           // Dummy options
           
           {"confirm-overwrite",    no_argument, 0, kDummy},
           {"file-filter",    required_argument, 0, kDummy},
-          {"window-icon",    required_argument, 0, kDummy},
           {"class",          required_argument, 0, kDummy},
           {"name",           required_argument, 0, kDummy},
           {"screen",         required_argument, 0, kDummy},
@@ -305,6 +316,16 @@ Shanty::ArgvReceived(int32 argc, char** argv)
         	
         case kHeight:
         		fHeight = atof(optarg);
+        		
+        		break;
+        		
+        case kColor:
+        		fColor = strdup(optarg + 1); // without '#'
+        		
+        		break;
+        		
+        case kWindowIcon:
+        		fWindowIcon = strdup(optarg);
         		
         		break;
         		
@@ -557,7 +578,7 @@ Shanty::ReadyToRun()
             
             case kEntry:
             {
-            	fDialog = new EntryDialog(fTitle, fWidth, fHeight, fText, fEntryText, fHideText);
+            	fDialog = new EntryDialog(fTitle, fWidth, fHeight, fText, fEntryText, fHideText, BString(fWindowIcon));
             	
             	fDialog->Show();
             	
@@ -567,7 +588,18 @@ Shanty::ReadyToRun()
             case kCalendar:
             {
             	fDialog = new CalendarDialog(fTitle, fWidth, fHeight, fText,
-            								 fDay, fMonth, fYear, fDateFormat);
+            								 fDay, fMonth, fYear, fDateFormat, BString(fWindowIcon));
+            	
+            	fDialog->Show();
+            	
+            	break;
+            }
+            
+            case kColorSelection:
+            {
+            	rgb_color color = hex_string_to_rgb_color(fColor);
+            	
+            	fDialog = new ColorDialog(BString(fTitle), fWidth, fHeight, color, BString(fWindowIcon));
             	
             	fDialog->Show();
             	
@@ -577,7 +609,7 @@ Shanty::ReadyToRun()
             case kTextInfo:
         	{
         		fDialog = new TextInfoDialog(fTitle, fWidth, fHeight,
-        									 fFilename, fEditable, fFixedFont);
+        									 fFilename, fEditable, fFixedFont, BString(fWindowIcon));
             	
             	fDialog->Show();
             	
@@ -588,7 +620,7 @@ Shanty::ReadyToRun()
         	{
         		fDialog = new ScaleDialog(fTitle, fWidth, fHeight, fText,
         								  fValue, fMinValue, fMaxValue, fStep,
-        								  fPrintPartial, fHideValue);
+        								  fPrintPartial, fHideValue, BString(fWindowIcon));
         		
             	fDialog->Show();
             	
@@ -598,15 +630,25 @@ Shanty::ReadyToRun()
         	case kProgress:
         	{
         		fDialog = new ProgressDialog(fTitle, fWidth, fHeight, fText,
-        									 fPercentage, fPulsate, fAutoClose, fNoCancel);
+        									 fPercentage, fPulsate, fAutoClose, fNoCancel, BString(fWindowIcon));
         									 
         		fDialog->Show();
         		
         		break;
         	}
         	
-            case kList:
+        	
             case kNotification:
+            {
+            	Notification notification(fTitle, fText, fWindowIcon, fTimeout);
+            	notification.Notify();
+            	
+            	be_app->PostMessage(B_QUIT_REQUESTED);
+            	
+            	break;
+            }
+        	
+            case kList:
             {	
             	fprintf(stderr, "Bummer! Option is not yet implemented...\n");
             	
@@ -778,7 +820,13 @@ main(int argc, char** argv)
     if (app.InitCheck() != B_OK)
         return -1;
 
-    app.Run();
+	try {
+    	app.Run();
+	}
+    catch(std::exception &e) {
+    	fprintf(stdout, "%s\n", e.what());
+    	return -1;
+    }
 
 	if (app.AutoKill())
 		kill(getppid(), SIGHUP);

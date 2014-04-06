@@ -1,18 +1,16 @@
-0.3 / 2010-11-17
+0.4 / 2013-10-15
+* Window icon option implemented
+* Color selection dialog implemented
+* Buttons aligned to right
+* Fixed ERROR when progress dialog auto-closed itself
 
-  * Fixed compilation under GCC4
-  
-  * Added fixed-font option to text information dialog
-  
+0.3 / 2010-11-17
+* Fixed compilation under GCC4
+* Added fixed-font option to text information dialog
 
 0.2 / 2010-11-07
-
-  * Timeout option implemented
-
-  * Various bugfixes
-
+* Timeout option implemented
+* Various bugfixes
 
 0.1 / 2010-11-02
-
-  * Initial version
-  
+* Initial version
