@@ -747,7 +747,7 @@ Shanty::MessageReceived(BMessage* message)
 	
 		switch (fResponseType) {
 			
-			case kInfo: kWarning: kError:
+			case kInfo: case kWarning: case kError:
 					what = MSG_OK_CLICKED;
 	
 					break;
