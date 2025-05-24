@@ -2,6 +2,8 @@ Shanty is a program for displaying dialog boxes from command line and scripts un
 
 This program is released under the MIT License (see the LICENSE file).
 
+You can find an improved fork called **Boxer** at [https://codeberg.org/augiedoggie/Boxer](https://codeberg.org/augiedoggie/Boxer).
+
 
 Installation
 ============
